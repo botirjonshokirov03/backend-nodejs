@@ -12,10 +12,17 @@ const propertySchema = new mongoose.Schema(
       ref: "Property",
       default: null,
     },
+
     status: {
       type: Number,
       enum: [1, 2, 3],
       default: 1,
+    },
+
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
 
     label: { type: String, default: "" },
@@ -56,7 +63,6 @@ const propertySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Auto-generate propertyId if not set
 propertySchema.pre("save", async function (next) {
   if (!this.propertyId) {
     const randomId = Math.floor(100000 + Math.random() * 900000);
@@ -65,4 +71,4 @@ propertySchema.pre("save", async function (next) {
   next();
 });
 
-module.exports = mongoose.model("property", propertySchema);
+module.exports = mongoose.model("Property", propertySchema);

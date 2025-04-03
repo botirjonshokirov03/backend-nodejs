@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const userControllers = require("../adminController/user.controller");
-const userValidations = require("../validations/user.validation");
+const authenticateJWT = require("../middleware/authentication");
 
-router.post(
-  "/register",
-  userValidations.registerValidation,
-  userControllers.registerUser
-);
+router.use(authenticateJWT);
+
+router.get("/", userControllers.getAllUsers);
+router.get("/:id", userControllers.getUserById);
+router.put("/:id", userControllers.updateUser);
+router.delete("/:id", userControllers.deleteUser);
 
 module.exports = router;
